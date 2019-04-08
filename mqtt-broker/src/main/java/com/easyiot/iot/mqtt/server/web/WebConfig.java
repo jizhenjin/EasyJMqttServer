@@ -6,15 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
-    @Autowired
-    AuthInterceptor authInterceptor;
+//    @Autowired
+//    AuthInterceptor authInterceptor;
 
     /**
      * 不需要登录拦截的url:登录注册和验证码
@@ -22,9 +19,14 @@ public class WebConfig extends WebMvcConfigurationSupport {
     private final String[] passPaths = {"/dashboard/login/**", "/static/**"};
 
     @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+    }
+
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 登录拦截器
-        registry.addInterceptor(authInterceptor).addPathPatterns("/**").excludePathPatterns(passPaths);
+//        registry.addInterceptor(authInterceptor).addPathPatterns("/**").excludePathPatterns(passPaths);
     }
 
     @Override
